@@ -1,7 +1,7 @@
 <h1 align="center">ILGON explorer</h1>
 <p align="center">Blockchain Explorer for inspecting and analyzing EVM Chains.</p>
 
-ILGON explorer provides a comprehensive, easy-to-use interface for users to view, confirm, and inspect transactions on EVM (Ethereum Virtual Machine) blockchains. This includes the POA Network, xDai Chain, Ethereum Classic and other **Ethereum testnets, private networks and sidechains**.
+ILGON explorer is a fork of BlockScout. ILGON explorer provides a comprehensive, easy-to-use interface for users to view, confirm, and inspect transactions on EVM (Ethereum Virtual Machine) blockchains. This includes the POA Network, xDai Chain, Ethereum Classic and other **Ethereum testnets, private networks and sidechains**.
 
 ## About ILGON explorer
 
