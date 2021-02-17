@@ -10,7 +10,7 @@ defmodule BlockScoutWeb.Tokens.OverviewView do
 
   @tabs ["token-transfers", "token-holders", "read-contract", "inventory"]
   @etherscan_token_link "https://etherscan.io/token/"
-  @blockscout_base_link "https://blockscout.com/"
+  @blockscout_base_link "https://ilgonexplorer.com/"
 
   def decimals?(%Token{decimals: nil}), do: false
   def decimals?(%Token{decimals: _}), do: true

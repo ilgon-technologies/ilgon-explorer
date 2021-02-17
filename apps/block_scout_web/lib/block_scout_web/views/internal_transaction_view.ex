@@ -4,6 +4,7 @@ defmodule BlockScoutWeb.InternalTransactionView do
   alias Explorer.Chain.InternalTransaction
 
   import BlockScoutWeb.Gettext
+  import BlockScoutWeb.WeiHelpers, only: [currency: 0]
 
   @doc """
   Returns the formatted string for the type of the internal transaction.

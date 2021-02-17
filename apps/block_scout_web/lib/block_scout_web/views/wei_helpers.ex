@@ -14,6 +14,10 @@ defmodule BlockScoutWeb.WeiHelpers do
 
   @type format_options :: [format_option()]
 
+  def currency do
+    Keyword.get(Application.get_env(:block_scout_web, BlockScoutWeb.Chain), :currency)
+  end
+
   @doc """
   Converts a `t:Explorer.Wei.t/0` value to the specified unit including a
   translated unit label.
@@ -75,5 +79,5 @@ defmodule BlockScoutWeb.WeiHelpers do
 
   defp display_unit(:wei), do: gettext("Wei")
   defp display_unit(:gwei), do: gettext("Gwei")
-  defp display_unit(:ether), do: gettext("Ether")
+  defp display_unit(:ether), do: currency()
 end

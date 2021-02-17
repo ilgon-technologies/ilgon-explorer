@@ -30,10 +30,11 @@
         'Less than': '<%= gettext("Less than") %>',
         'Market Cap': '<%= gettext("Market Cap") %>',
         'Price': '<%= gettext("Price") %>',
-        'Ether': '<%= gettext("Ether") %>',
+        'Ether': '<%= currency() %>',
         'Tx/day': '<%= gettext("Tx/day") %>'
       }
     </script>
+    <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/token-transfers-toggle.js") %>"></script>
   </head>
 
   <body>

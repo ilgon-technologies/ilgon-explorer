@@ -9,35 +9,16 @@ defmodule BlockScoutWeb.LayoutView do
 
   @issue_url "https://github.com/poanetwork/blockscout/issues/new"
   @default_other_networks [
-    %{
-      title: "POA",
-      url: "https://blockscout.com/poa/core"
-    },
-    %{
-      title: "Sokol",
-      url: "https://blockscout.com/poa/sokol",
-      test_net?: true
-    },
-    %{
-      title: "xDai",
-      url: "https://blockscout.com/poa/xdai"
-    },
-    %{
-      title: "Ethereum Classic",
-      url: "https://blockscout.com/etc/mainnet",
-      other?: true
-    },
-    %{
-      title: "RSK",
-      url: "https://blockscout.com/rsk/mainnet",
-      other?: true
-    }
   ]
 
   alias BlockScoutWeb.{CustomContractsHelpers, SocialMedia}
 
   def logo do
     Keyword.get(application_config(), :logo) || "/images/blockscout_logo.svg"
+  end
+  
+  def logo_header do
+    Keyword.get(application_config(), :logo_header) || ""
   end
 
   def logo_footer do
@@ -112,25 +93,7 @@ defmodule BlockScoutWeb.LayoutView do
   end
 
   def release_link(version) do
-    release_link_env_var = Application.get_env(:block_scout_web, :release_link)
-
-    release_link =
-      cond do
-        version == "" || version == nil ->
-          nil
-
-        release_link_env_var == "" || release_link_env_var == nil ->
-          "https://github.com/poanetwork/blockscout/releases/tag/" <> version
-
-        true ->
-          release_link_env_var
-      end
-
-    if release_link == nil do
-      ""
-    else
-      html_escape({:safe, "<a href=\"#{release_link}\" class=\"footer-link\" target=\"_blank\">#{version}</a>"})
-    end
+    ""
   end
 
   def ignore_version?("unknown"), do: true
