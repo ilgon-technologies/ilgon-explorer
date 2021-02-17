@@ -9,10 +9,6 @@ ILGON explorer is an Elixir application that allows users to search transactions
 
 Currently available full-featured block explorers (Etherscan, Etherchain, Blockchair) are closed systems which are not independently verifiable.  As Ethereum sidechains continue to proliferate in both private and public settings, transparent, open-source tools are needed to analyze and validate transactions.
 
-## Acknowledgements
-
-We would like to thank the [EthPrize foundation](http://ethprize.io/) for their funding support.
-
 ## License
 
 [![License: GPL v3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
