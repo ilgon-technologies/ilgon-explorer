@@ -261,9 +261,9 @@
                 <%= value(@transaction) %>
               </h3>
               <%= if true do %>
-                <p class="address-current-balance"
-                  data-wei-value=<%= @transaction.value.value %>
-                  data-usd-exchange-rate>
+                <p class="address-current-balance">
+                  <span data-wei-value=<%= @transaction.value.value %> data-usd-exchange-rate></span>
+                  <small>(<span data-usd-unit-price>"></span>/<%= currency() %>)</small>
                 </p>
               <% end %>
             </div>
