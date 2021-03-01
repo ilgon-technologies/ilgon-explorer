@@ -8,7 +8,7 @@
   LOGO_FOOTER="/images/ilg_footer_main_logo.svg" \
   CHAIN_SPEC_PATH="/home/ilgGenesis.json" \
   COIN="ILG" \
-  DISABLE_EXCHANGE_RATES="true" \
+  DISABLE_EXCHANGE_RATES="false" \
   SHOW_PRICE_CHART="false" \
   ECTO_USE_SSL="false" \
   ETHEREUM_JSONRPC_VARIANT="parity" \
