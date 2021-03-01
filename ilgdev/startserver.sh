@@ -1,5 +1,5 @@
 #!/bin/sh
-DATABASE_URL="postgresql://qp@localhost:5432/blockscout" \
+  DATABASE_URL="postgresql://qp@localhost:5432/explorer_dev" \
   BLOCKSCOUT_HOST="0.0.0.0" \
   BLOCKSCOUT_PROTOCOL="http" \
   PORT="8080" \
