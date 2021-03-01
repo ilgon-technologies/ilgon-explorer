@@ -15,7 +15,7 @@
             data-wei-value="<%= if @address.fetched_coin_balance, do: @address.fetched_coin_balance.value %>"
             data-usd-exchange-rate>
           </span>
-          <small>(<span data-usd-unit-price>"></span>/<%= currency() %>)</small>
+          <small>(<span data-usd-unit-price></span>/<%= currency() %>)</small>
         </p>
       <% end %>
 
