@@ -50,19 +50,14 @@ export function updateAllCalculatedUsdValues () {
 
   if (exchangeRateEls().length > 0) {
     const usdUnitPriceEls = () => $('[data-usd-unit-price]')
-    const getTimestamp = () => {
-      const transactionDataDataSet = $('[data-from-now]').first().dataset
-      return transactionDataDataSet === undefined
-        ? null
-        : new Date(transactionDataDataSet.fromNow).getTime() / 1000
-    }
-
     exchangeRateEls().text('$... USD')
     usdUnitPriceEls().text('...')
-    const timestamp = getTimestamp()
+    const timestamp = (
+      el => el && (new Date(el.dataset.fromNow).getTime() / 1000)
+    )($('[data-from-now]').get(0))
     fetch(
       'https://priceapi.ilgonwallet.com/prices' +
-          (timestamp === null ? '' : '?timestamp=' + timestamp)
+          (timestamp === undefined ? '' : '?timestamp=' + timestamp)
     )
       .then(r => r.json())
       .then(r => {
