@@ -42,56 +42,22 @@ export function formatAllUsdValues (root) {
 }
 formatAllUsdValues()
 
-export function updateAllCalculatedUsdValues () {
-  const exchangeRateEls = () => $('[data-usd-exchange-rate]')
-    .filter((i, el) =>
-    // eslint-disable-next-line no-prototype-builtins
-      el.dataset.hasOwnProperty('weiValue'))
+function tryUpdateCalculatedUsdValues (el, usdExchangeRate = el.dataset.usdExchangeRate) {
+  // eslint-disable-next-line no-prototype-builtins
+  if (!el.dataset.hasOwnProperty('weiValue')) return
+  const ether = weiToEther(el.dataset.weiValue)
+  const usd = etherToUSD(ether, usdExchangeRate)
+  const formattedUsd = formatUsdValue(usd)
+  if (formattedUsd !== el.innerHTML) el.innerHTML = formattedUsd
+}
 
-  if (exchangeRateEls().length > 0) {
-    const usdUnitPriceEls = () => $('[data-usd-unit-price]')
-    const setInnerHtml = innerHtml => (_, el) => {
-      el.innerHTML = innerHtml
-      return undefined
-    }
-    const getTimestamp = () => {
-      const transactionDataDataSet = $('[data-from-now]').first().dataset
-      return transactionDataDataSet === undefined
-        ? null
-        : new Date(transactionDataDataSet.fromNow).getTime() / 1000
-    }
+function tryUpdateUnitPriceValues (el, usdUnitPrice = el.dataset.usdUnitPrice) {
+  const formattedValue = formatCurrencyValue(usdUnitPrice)
+  if (formattedValue !== el.innerHTML) el.innerHTML = formattedValue
+}
 
-    exchangeRateEls().each(setInnerHtml('$... USD'))
-    usdUnitPriceEls().each(setInnerHtml('...'))
-    const timestamp = getTimestamp()
-    fetch(
-      'https://priceapi.ilgonwallet.com/prices' +
-          (timestamp === null ? '' : '?timestamp=' + timestamp)
-    )
-      .then(r => r.json())
-      .then(r => {
-        if ('data' in r) {
-          const showPrice = usdExchangeRate => {
-            usdUnitPriceEls().each(setInnerHtml(formatCurrencyValue(usdExchangeRate)))
-            exchangeRateEls().each((i, el) => {
-              const ether = weiToEther(el.dataset.weiValue)
-              const usd = etherToUSD(ether, usdExchangeRate)
-              el.innerHTML = formatUsdValue(usd)
-            })
-          }
-
-          showPrice(r.data.ILG_USD)
-        } else if (r.error.code === 'E001_PRICE_UNKNOWN') {
-          exchangeRateEls().each(setInnerHtml('$N/A USD'))
-          usdUnitPriceEls().each(setInnerHtml('N/A'))
-        } else {
-          throw new Error()
-        }
-      })
-      .catch(() => {
-        exchangeRateEls().each(setInnerHtml('could not fetch USD price'))
-        usdUnitPriceEls().each(setInnerHtml('N/A'))
-      })
-  }
+export function updateAllCalculatedUsdValues (usdExchangeRate) {
+  $('[data-usd-exchange-rate]').each((i, el) => tryUpdateCalculatedUsdValues(el, usdExchangeRate))
+  $('[data-usd-unit-price]').each((i, el) => tryUpdateUnitPriceValues(el, usdExchangeRate))
 }
 updateAllCalculatedUsdValues()
