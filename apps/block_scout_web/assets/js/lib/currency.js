@@ -50,10 +50,6 @@ export function updateAllCalculatedUsdValues () {
 
   if (exchangeRateEls().length > 0) {
     const usdUnitPriceEls = () => $('[data-usd-unit-price]')
-    const setInnerHtml = innerHtml => (_, el) => {
-      el.innerHTML = innerHtml
-      return undefined
-    }
     const getTimestamp = () => {
       const transactionDataDataSet = $('[data-from-now]').first().dataset
       return transactionDataDataSet === undefined
@@ -61,8 +57,8 @@ export function updateAllCalculatedUsdValues () {
         : new Date(transactionDataDataSet.fromNow).getTime() / 1000
     }
 
-    exchangeRateEls().each(setInnerHtml('$... USD'))
-    usdUnitPriceEls().each(setInnerHtml('...'))
+    exchangeRateEls().text('$... USD')
+    usdUnitPriceEls().text('...')
     const timestamp = getTimestamp()
     fetch(
       'https://priceapi.ilgonwallet.com/prices' +
@@ -72,7 +68,7 @@ export function updateAllCalculatedUsdValues () {
       .then(r => {
         if ('data' in r) {
           const showPrice = usdExchangeRate => {
-            usdUnitPriceEls().each(setInnerHtml(formatCurrencyValue(usdExchangeRate)))
+            usdUnitPriceEls().text(formatCurrencyValue(usdExchangeRate))
             exchangeRateEls().each((i, el) => {
               const ether = weiToEther(el.dataset.weiValue)
               const usd = etherToUSD(ether, usdExchangeRate)
@@ -82,15 +78,15 @@ export function updateAllCalculatedUsdValues () {
 
           showPrice(r.data.ILG_USD)
         } else if (r.error.code === 'E001_PRICE_UNKNOWN') {
-          exchangeRateEls().each(setInnerHtml('$N/A USD'))
-          usdUnitPriceEls().each(setInnerHtml('N/A'))
+          exchangeRateEls().text('$N/A USD')
+          usdUnitPriceEls().text('N/A')
         } else {
           throw new Error()
         }
       })
       .catch(() => {
-        exchangeRateEls().each(setInnerHtml('could not fetch USD price'))
-        usdUnitPriceEls().each(setInnerHtml('N/A'))
+        exchangeRateEls().text('could not fetch USD price')
+        usdUnitPriceEls().text('N/A')
       })
   }
 }
