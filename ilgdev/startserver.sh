@@ -14,7 +14,7 @@
   ETHEREUM_JSONRPC_VARIANT="parity" \
   ETHEREUM_JSONRPC_HTTP_URL="https://wallet.ilgointest.e-diploma.org/rpc/ilgtest/" \
   ETHEREUM_JSONRPC_TRACE_URL="https://wallet.ilgointest.e-diploma.org/rpc/ilgtest/" \
-  NETWORK="ILGCoin" \
+  NETWORK="ILGON" \
   REWARDS_CONTRACT="0xA000000000000000000000000000000000000000" \
   SECRET_KEY_BASE="sfsfdsfsfdsfdssdsdfdsfddsffdsfdsfdsfdsfdsfds" \
   SUBNETWORK="" \
