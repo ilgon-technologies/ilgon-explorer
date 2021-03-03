@@ -14,3 +14,9 @@ Currently available full-featured block explorers (Etherscan, Etherchain, Blockc
 [![License: GPL v3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
+
+## For developers
+
+### Modifying the RPC network url
+
+Set the `ETHEREUM_JSONRPC_HTTP_URL` and `ETHEREUM_JSONRPC_TRACE_URL` env variables
