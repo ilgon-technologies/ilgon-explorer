@@ -9,7 +9,7 @@
   CHAIN_SPEC_PATH="/home/ilgGenesis.json" \
   COIN="ILG" \
   DISABLE_EXCHANGE_RATES="false" \
-  SHOW_PRICE_CHART="false" \
+  SHOW_PRICE_CHART="true" \
   ECTO_USE_SSL="false" \
   ETHEREUM_JSONRPC_VARIANT="parity" \
   ETHEREUM_JSONRPC_HTTP_URL="https://wallet.ilgointest.e-diploma.org/rpc/ilgtest/" \
