@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import numeral from 'numeral'
 import { BigNumber } from 'bignumber.js'
+import moment from 'moment'
 
 export function formatUsdValue (value) {
   return `${formatCurrencyValue(value)} USD`
@@ -59,25 +60,20 @@ function tryUpdateUnitPriceValues (el, usdUnitPrice = el.dataset.usdUnitPrice) {
 export function updateAllCalculatedUsdValues (usdExchangeRate) {
   $('[data-usd-exchange-rate]').each((i, el) => tryUpdateCalculatedUsdValues(el, usdExchangeRate))
   $('[data-usd-unit-price]').each((i, el) => tryUpdateUnitPriceValues(el, usdExchangeRate))
-  const exchangeRateEls = $('[data-ilg-usd-exchange-rate]')
-    .filter((i, el) =>
-    // eslint-disable-next-line no-prototype-builtins
-      el.dataset.hasOwnProperty('ilgWeiValue'))
+  const exchangeRateEls = $('[data-ilg-wei-value]')
 
   if (exchangeRateEls.length > 0) {
-    const usdUnitPriceEls = $('[data-ilg-usd-unit-price]')
-    const timestamp = (
-      el => el && (new Date(el.dataset.fromNow).getTime() / 1000)
-    )($('[data-from-now]').get(0))
+    const getUsdUnitPriceEls = () => $('[data-ilg-usd-unit-price]')
+    const timestamp =
+        moment($('[data-from-now]').get(0).dataset.fromNow).unix()
     fetch(
-      'https://priceapi.ilgonwallet.com/prices' +
-          (timestamp === undefined ? '' : '?timestamp=' + timestamp)
+      'https://priceapi.ilgonwallet.com/prices?timestamp=' + timestamp
     )
       .then(r => r.json())
       .then(r => {
         if ('data' in r) {
           const showPrice = usdExchangeRate => {
-            usdUnitPriceEls.text(formatCurrencyValue(usdExchangeRate))
+            getUsdUnitPriceEls().text(formatCurrencyValue(usdExchangeRate))
             exchangeRateEls.each((i, el) => {
               const ether = weiToEther(el.dataset.weiValue)
               const usd = etherToUSD(ether, usdExchangeRate)
@@ -88,14 +84,14 @@ export function updateAllCalculatedUsdValues (usdExchangeRate) {
           showPrice(r.data.ILG_USD)
         } else if (r.error.code === 'E001_PRICE_UNKNOWN') {
           exchangeRateEls.text('$N/A USD')
-          usdUnitPriceEls.text('N/A')
+          getUsdUnitPriceEls().text('N/A')
         } else {
           throw new Error()
         }
       })
       .catch(() => {
         exchangeRateEls.text('could not fetch USD price')
-        usdUnitPriceEls.text('N/A')
+        getUsdUnitPriceEls().text('N/A')
       })
   }
 }
