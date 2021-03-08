@@ -207,10 +207,10 @@
                 <h3 class="address-balance-text">
                   <%= value(@transaction) %>
                 </h3>
-                <%= if true do %>
+                <%= if !empty_exchange_rate?(@exchange_rate) do %>
                   <p class="address-current-balance"
                     data-wei-value=<%= @transaction.value.value %>
-                    data-usd-exchange-rate>
+                    data-usd-exchange-rate=<%= @exchange_rate.usd_value %>>
                   </p>
                 <% end %>
               </div>
