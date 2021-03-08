@@ -42,16 +42,30 @@ export function formatAllUsdValues (root) {
 }
 formatAllUsdValues()
 
-export function updateAllCalculatedUsdValues () {
-  const exchangeRateEls = () => $('[data-usd-exchange-rate]')
+function tryUpdateCalculatedUsdValues (el, usdExchangeRate = el.dataset.usdExchangeRate) {
+  // eslint-disable-next-line no-prototype-builtins
+  if (!el.dataset.hasOwnProperty('weiValue')) return
+  const ether = weiToEther(el.dataset.weiValue)
+  const usd = etherToUSD(ether, usdExchangeRate)
+  const formattedUsd = formatUsdValue(usd)
+  if (formattedUsd !== el.innerHTML) el.innerHTML = formattedUsd
+}
+
+function tryUpdateUnitPriceValues (el, usdUnitPrice = el.dataset.usdUnitPrice) {
+  const formattedValue = formatCurrencyValue(usdUnitPrice)
+  if (formattedValue !== el.innerHTML) el.innerHTML = formattedValue
+}
+
+export function updateAllCalculatedUsdValues (usdExchangeRate) {
+  $('[data-usd-exchange-rate]').each((i, el) => tryUpdateCalculatedUsdValues(el, usdExchangeRate))
+  $('[data-usd-unit-price]').each((i, el) => tryUpdateUnitPriceValues(el, usdExchangeRate))
+  const exchangeRateEls = $('[data-ilg-usd-exchange-rate]')
     .filter((i, el) =>
     // eslint-disable-next-line no-prototype-builtins
-      el.dataset.hasOwnProperty('weiValue'))
+      el.dataset.hasOwnProperty('ilgWeiValue'))
 
-  if (exchangeRateEls().length > 0) {
-    const usdUnitPriceEls = () => $('[data-usd-unit-price]')
-    exchangeRateEls().text('$... USD')
-    usdUnitPriceEls().text('...')
+  if (exchangeRateEls.length > 0) {
+    const usdUnitPriceEls = $('[data-ilg-usd-unit-price]')
     const timestamp = (
       el => el && (new Date(el.dataset.fromNow).getTime() / 1000)
     )($('[data-from-now]').get(0))
@@ -63,8 +77,8 @@ export function updateAllCalculatedUsdValues () {
       .then(r => {
         if ('data' in r) {
           const showPrice = usdExchangeRate => {
-            usdUnitPriceEls().text(formatCurrencyValue(usdExchangeRate))
-            exchangeRateEls().each((i, el) => {
+            usdUnitPriceEls.text(formatCurrencyValue(usdExchangeRate))
+            exchangeRateEls.each((i, el) => {
               const ether = weiToEther(el.dataset.weiValue)
               const usd = etherToUSD(ether, usdExchangeRate)
               el.innerHTML = formatUsdValue(usd)
@@ -73,15 +87,15 @@ export function updateAllCalculatedUsdValues () {
 
           showPrice(r.data.ILG_USD)
         } else if (r.error.code === 'E001_PRICE_UNKNOWN') {
-          exchangeRateEls().text('$N/A USD')
-          usdUnitPriceEls().text('N/A')
+          exchangeRateEls.text('$N/A USD')
+          usdUnitPriceEls.text('N/A')
         } else {
           throw new Error()
         }
       })
       .catch(() => {
-        exchangeRateEls().text('could not fetch USD price')
-        usdUnitPriceEls().text('N/A')
+        exchangeRateEls.text('could not fetch USD price')
+        usdUnitPriceEls.text('N/A')
       })
   }
 }

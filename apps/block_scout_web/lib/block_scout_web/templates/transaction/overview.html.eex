@@ -110,7 +110,7 @@
               <%= formatted_fee(@transaction, denomination: :ether) %>
 
               <%= if true do %>
-                (<span data-wei-value=<%= fee(@transaction) %> data-usd-exchange-rate></span>)
+                (<span data-ilg-wei-value=<%= fee(@transaction) %> data-ilg-usd-exchange-rate>$... USD</span>)
               <% end %>
             </dd>
           </dl>
@@ -262,8 +262,8 @@
               </h3>
               <%= if true do %>
                 <p class="address-current-balance">
-                  <span data-wei-value=<%= @transaction.value.value %> data-usd-exchange-rate></span>
-                  <small>(<span data-usd-unit-price>"></span>/<%= currency() %>)</small>
+                  <span data-ilg-wei-value=<%= @transaction.value.value %> data-ilg-usd-exchange-rate>$... USD</span>
+                  <small>(<span data-ilg-usd-unit-price>...</span>/<%= currency() %>)</small>
                 </p>
               <% end %>
             </div>
