@@ -733,7 +733,7 @@ msgstr ""
 #, elixir-format
 #: lib/block_scout_web/templates/block/overview.html.eex:36
 msgid "Hash"
-msgstr ""
+msgstr "Block Hash"
 
 #, elixir-format
 #: lib/block_scout_web/templates/transaction/overview.html.eex:139
@@ -1134,7 +1134,7 @@ msgstr ""
 #, elixir-format
 #: lib/block_scout_web/templates/block/overview.html.eex:43
 msgid "Parent Hash"
-msgstr ""
+msgstr "Previous Block Hash"
 
 #, elixir-format
 #: lib/block_scout_web/templates/layout/_topnav.html.eex:65
