@@ -19,11 +19,6 @@
           contract: false,
           use_custom_tooltip: false %>
       </div>
-      <%= if BlockScoutWeb.BlockView.show_reward?(@block.rewards) do %>
-        <div class="text-truncate">
-          <%= gettext "Reward" %> <%= BlockScoutWeb.BlockView.combined_rewards_value(@block) %>
-        </div>
-      <% end %>
     </div>
   </div>
 </div>
