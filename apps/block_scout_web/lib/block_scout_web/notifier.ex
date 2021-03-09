@@ -13,6 +13,8 @@ defmodule BlockScoutWeb.Notifier do
   alias Explorer.ExchangeRates.Token
   alias Explorer.SmartContract.{Solidity.CodeCompiler, Solidity.CompilerVersion}
   alias Phoenix.View
+  alias Explorer.Chain.Cache.{AddressSum}
+  alias Explorer.Chain.Wei
 
   def handle_event({:chain_event, :addresses, type, addresses}) when type in [:realtime, :on_demand] do
     Endpoint.broadcast("addresses:new_address", "count", %{count: Chain.address_estimated_count()})
@@ -96,13 +98,7 @@ defmodule BlockScoutWeb.Notifier do
       end
 
     exchange_rate_with_available_supply =
-      case Application.get_env(:explorer, :supply) do
-        RSK ->
-          %{exchange_rate | available_supply: nil, market_cap_usd: RSK.market_cap(exchange_rate)}
-
-        _ ->
-          exchange_rate
-      end
+     %{exchange_rate | market_cap_usd: Decimal.mult(%Wei{value: AddressSum.get_sum()} |> Wei.to(:ether), exchange_rate.usd_value)}
 
     Endpoint.broadcast("exchange_rate:new_rate", "new_rate", %{
       exchange_rate: exchange_rate_with_available_supply,
