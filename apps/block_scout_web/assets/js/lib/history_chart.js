@@ -50,17 +50,6 @@ const config = {
           fontColor: sassVariables.dashboardBannerChartAxisFontColor
         }
       }, {
-        id: 'marketCap',
-        gridLines: {
-          display: false,
-          drawBorder: false
-        },
-        ticks: {
-          callback: (_value, _index, _values) => '',
-          maxTicksLimit: 6,
-          drawOnChartArea: false
-        }
-      }, {
         id: 'numTransactions',
         position: 'right',
         gridLines: {
@@ -106,11 +95,7 @@ function setDataToLocalStorage (key, data) {
 }
 
 function getPriceData (marketHistoryData) {
-  if (marketHistoryData.length === 0) {
-    return getDataFromLocalStorage('priceData')
-  }
   const data = marketHistoryData.map(({ date, closingPrice }) => ({ x: date, y: closingPrice }))
-  setDataToLocalStorage('priceData', data)
   return data
 }
 
@@ -158,7 +143,6 @@ class MarketHistoryChart {
     {})
 
     let priceActivated = true
-    let marketCapActivated = true
 
     this.price = {
       label: window.localized.Price,
@@ -176,22 +160,6 @@ class MarketHistoryChart {
       priceActivated = false
     }
 
-    this.marketCap = {
-      label: window.localized['Market Cap'],
-      yAxisID: 'marketCap',
-      data: [],
-      fill: false,
-      pointRadius: 0,
-      backgroundColor: mcapLineColor,
-      borderColor: mcapLineColor
-      // lineTension: 0
-    }
-    if (dataConfig.market === undefined || dataConfig.market.indexOf('market_cap') === -1) {
-      this.marketCap.hidden = true
-      axes.marketCap.display = false
-      marketCapActivated = false
-    }
-
     this.numTransactions = {
       label: window.localized['Tx/day'],
       yAxisID: 'numTransactions',
@@ -206,14 +174,14 @@ class MarketHistoryChart {
     if (dataConfig.transactions === undefined || dataConfig.transactions.indexOf('transactions_per_day') === -1) {
       this.numTransactions.hidden = true
       axes.numTransactions.display = false
-    } else if (!priceActivated && !marketCapActivated) {
+    } else if (!priceActivated) {
       axes.numTransactions.position = 'left'
       this.numTransactions.backgroundColor = sassVariables.dashboardLineColorPrice
       this.numTransactions.borderColor = sassVariables.dashboardLineColorPrice
     }
 
     this.availableSupply = availableSupply
-    config.data.datasets = [this.price, this.marketCap, this.numTransactions]
+    config.data.datasets = [this.price, this.numTransactions]
 
     const isChartLoadedKey = 'isChartLoaded'
     const isChartLoaded = window.sessionStorage.getItem(isChartLoadedKey) === 'true'
@@ -228,13 +196,6 @@ class MarketHistoryChart {
 
   updateMarketHistory (availableSupply, marketHistoryData) {
     this.price.data = getPriceData(marketHistoryData)
-    if (this.availableSupply !== null && typeof this.availableSupply === 'object') {
-      const today = new Date().toJSON().slice(0, 10)
-      this.availableSupply[today] = availableSupply
-      this.marketCap.data = getMarketCapData(marketHistoryData, this.availableSupply)
-    } else {
-      this.marketCap.data = getMarketCapData(marketHistoryData, availableSupply)
-    }
     this.chart.update()
   }
 
@@ -250,7 +211,7 @@ export function createMarketHistoryChart (el) {
 
   const $chartError = $('[data-chart-error-message]')
   const chart = new MarketHistoryChart(el, 0, [], dataConfig)
-  Object.keys(dataPaths).forEach(function (historySource) {
+  ;['market'].forEach(function (historySource) {
     $.getJSON(dataPaths[historySource], { type: 'JSON' })
       .done(data => {
         switch (historySource) {
