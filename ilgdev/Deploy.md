@@ -10,9 +10,6 @@ ssh-add ~/.ssh/gitlab_ed25519
 sudo --preserve-env=SSH_AUTH_SOCK sh
 cd /docker/build/blockscout/blockscout
 git pull origin master
-```
-4. 
-```sh
 cd /docker
 docker-compose up -d --build blockscout
 ```
