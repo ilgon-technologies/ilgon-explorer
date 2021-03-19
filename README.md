@@ -17,6 +17,8 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 
 ## For developers
 
+See the `ilgdev` folder.
+
 ### Modifying the RPC network url
 
 Set the `ETHEREUM_JSONRPC_WS_URL`, `ETHEREUM_JSONRPC_HTTP_URL` and `ETHEREUM_JSONRPC_TRACE_URL` env variables
