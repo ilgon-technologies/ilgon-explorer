@@ -64,12 +64,13 @@ export function updateAllCalculatedUsdValues (usdExchangeRate) {
 
   if (exchangeRateEls.length > 0) {
     const getUsdUnitPriceEl = $('[data-ilg-usd-unit-price]')
+    const isLive = getUsdUnitPriceEl[0].parentElement.innerText.endsWith('ILG)')
     const timestamp =
-        moment($('[data-from-now]').get(0).dataset.fromNow).unix()
-    fetch(
-      'https://priceapi.ilgonwallet.com/prices?timestamp=' + timestamp
-    )
-      .then(r => r.json())
+        moment($('[data-from-now]').get(0).dataset.fromNow).unix();
+    (isLive
+      ? (fetch('https://priceapi.ilgonwallet.com/prices?timestamp=' + timestamp)
+        .then(r => r.json()))
+      : Promise.resolve({ data: { ILG_USD: '0' } }))
       .then(r => {
         if ('data' in r) {
           const showPrice = usdExchangeRate => {
