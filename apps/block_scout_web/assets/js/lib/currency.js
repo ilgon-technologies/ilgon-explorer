@@ -63,7 +63,7 @@ export function updateAllCalculatedUsdValues (usdExchangeRate) {
   const exchangeRateEls = $('[data-ilg-wei-value]')
 
   if (exchangeRateEls.length > 0) {
-    const getUsdUnitPriceEls = () => $('[data-ilg-usd-unit-price]')
+    const getUsdUnitPriceEl = $('[data-ilg-usd-unit-price]')
     const timestamp =
         moment($('[data-from-now]').get(0).dataset.fromNow).unix()
     fetch(
@@ -73,7 +73,7 @@ export function updateAllCalculatedUsdValues (usdExchangeRate) {
       .then(r => {
         if ('data' in r) {
           const showPrice = usdExchangeRate => {
-            getUsdUnitPriceEls().text(formatCurrencyValue(usdExchangeRate))
+            getUsdUnitPriceEl.text(formatCurrencyValue(usdExchangeRate))
             exchangeRateEls.each((i, el) => {
               const ether = weiToEther(el.dataset.weiValue)
               const usd = etherToUSD(ether, usdExchangeRate)
@@ -84,14 +84,14 @@ export function updateAllCalculatedUsdValues (usdExchangeRate) {
           showPrice(r.data.ILG_USD)
         } else if (r.error.code === 'E001_PRICE_UNKNOWN') {
           exchangeRateEls.text('$N/A USD')
-          getUsdUnitPriceEls().text('N/A')
+          getUsdUnitPriceEl.text('N/A')
         } else {
           throw new Error()
         }
       })
       .catch(() => {
         exchangeRateEls.text('could not fetch USD price')
-        getUsdUnitPriceEls().text('N/A')
+        getUsdUnitPriceEl.text('N/A')
       })
   }
 }
