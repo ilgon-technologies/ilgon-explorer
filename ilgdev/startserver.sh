@@ -1,6 +1,6 @@
 #!/bin/sh
   DATABASE_URL="postgresql://qp@localhost:5432/explorer_dev" \
-  BLOCKSCOUT_HOST="0.0.0.0" \
+  BLOCKSCOUT_HOST="0.0.0.0:8081" \
   BLOCKSCOUT_PROTOCOL="http" \
   PORT="8080" \
   LOGO="/images/ilg_header_main_logo.svg" \
@@ -12,8 +12,8 @@
   SHOW_PRICE_CHART="true" \
   ECTO_USE_SSL="false" \
   ETHEREUM_JSONRPC_VARIANT="parity" \
-  ETHEREUM_JSONRPC_HTTP_URL="https://wallet.ilgointest.e-diploma.org/rpc/ilgtest/" \
-  ETHEREUM_JSONRPC_TRACE_URL="https://wallet.ilgointest.e-diploma.org/rpc/ilgtest/" \
+  ETHEREUM_JSONRPC_HTTP_URL="http://173.249.1.181:48545/" \
+  ETHEREUM_JSONRPC_TRACE_URL="http://173.249.1.181:48545/" \
   NETWORK="ILGON" \
   REWARDS_CONTRACT="0xA000000000000000000000000000000000000000" \
   SECRET_KEY_BASE="sfsfdsfsfdsfdssdsdfdsfddsffdsfdsfdsfdsfdsfds" \
