@@ -7,7 +7,7 @@ defmodule BlockScoutWeb.LayoutView do
 
   import BlockScoutWeb.AddressView, only: [from_address_hash: 1]
 
-  @issue_url "https://github.com/poanetwork/blockscout/issues/new"
+  @issue_url "https://github.com/blockscout/blockscout/issues/new"
   @default_other_networks [
   ]
 
