@@ -1,8 +1,6 @@
 #!/bin/sh
+# after startup you can use the explorer on http://localhost:4000/
   DATABASE_URL="postgresql://qp@localhost:5432/explorer_dev" \
-  BLOCKSCOUT_HOST="0.0.0.0:8081" \
-  BLOCKSCOUT_PROTOCOL="http" \
-  PORT="8080" \
   LOGO="/images/ilg_header_main_logo.svg" \
   LOGO_HEADER="/images/ilg_main_logo.svg" \
   LOGO_FOOTER="/images/ilg_footer_main_logo.svg" \
