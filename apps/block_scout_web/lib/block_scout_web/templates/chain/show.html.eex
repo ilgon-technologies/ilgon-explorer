@@ -49,7 +49,8 @@
                 </span>
                 <div>
                   <% total_market_cap = market_cap(@market_cap_calculation, @exchange_rate) %>
-                  <span style="display: contents;" class="dashboard-banner-chart-legend-value" data-selector="market-cap" data-usd-value="<%= total_market_cap %>">
+                  <span style="display: contents;" class="dashboard-banner-chart-legend-value" data-selector="market-cap" data-total-supply-usd-value="<%= total_market_cap %>">
+                    $... USD
                   </span>
                   <%= if token_bridge_supply?() do %>
                     <% token_bridge_market_cap = total_market_cap_from_token_bridge(@exchange_rate) %>

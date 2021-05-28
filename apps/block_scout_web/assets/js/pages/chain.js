@@ -7,11 +7,12 @@ import map from 'lodash/map'
 import humps from 'humps'
 import numeral from 'numeral'
 import socket from '../socket'
-import { updateAllCalculatedUsdValues, formatUsdValue } from '../lib/currency'
-import { createStore, connectElements } from '../lib/redux_helpers.js'
+import { formatUsdValue, updateAllCalculatedUsdValues } from '../lib/currency'
+import { connectElements, createStore } from '../lib/redux_helpers.js'
 import { batchChannel, showLoader } from '../lib/utils'
 import listMorph from '../lib/list_morph'
 import '../app'
+import BigNumber from 'bignumber.js'
 
 const BATCH_THRESHOLD = 6
 const BLOCKS_PER_PAGE = 4
@@ -340,6 +341,58 @@ if ($chainDetailsPage.length) {
     msg: msg
   }))
 }
+
+const intDiv = (x, y) => Math.floor(x / y)
+
+/** sums an array of Bigs */
+const sumBn = xs => xs.reduce((acc, x) => acc.plus(x), new BigNumber(0))
+
+$('[data-total-supply-usd-value]').each(async (_, el) => {
+  const nonCirculatingAddrs = [
+    '0x2a82f4DBC80fadc2191B3B8F448dC5133840E1e4',
+    '0xA59773D4DC028C04EEa96658443CBA91b98179cA',
+    '0xfe0de8f2D0F647621b1087c5D144c826409D3443',
+    '0x57ae0BAE66277C2266074442be2C2214F3f483bF',
+    '0xA79ed58d354C2d5C4C284F10a78Cc948E74Ef802',
+    '0x47CB7d3727c17906e220b042aAa4b7F7F5E6C23A'
+  ]
+  Promise.all(
+    nonCirculatingAddrs
+      .map((a) =>
+        fetch(
+        `/api?module=account&action=eth_get_balance&address=${a}&block=latest`
+        )
+          .then(r => {
+            if (intDiv(r.status, 100) === 2) {
+              return r
+            } else {
+              throw new Error(`status is ${r.status} for ${r.url}`)
+            }
+          })
+          .then(r => r.json())
+          // convert to ilg
+          .then(({ result }) =>
+            new BigNumber(result).div(new BigNumber(10).pow(18)))))
+    .then(sumBn)
+    // convert to usd
+    .then(nonCirculatingAmount => {
+      const { usdExchangeRate } = $('[data-usd-exchange-rate]').get(0).dataset
+      return nonCirculatingAmount.multipliedBy(usdExchangeRate)
+    })
+    .then(nonCirculatingAmount => {
+      const totalSupply = new BigNumber(el.dataset.totalSupplyUsdValue)
+      return totalSupply.minus(nonCirculatingAmount)
+    })
+    .then(marketSupply => marketSupply.toFixed())
+    .then(formatUsdValue)
+    .catch((e) => {
+      console.error(e)
+      return 'Couldn\'t fetch'
+    })
+    .then(marketSupplyOrErr => {
+      el.innerHTML = marketSupplyOrErr
+    })
+})
 
 function loadTransactions (store) {
   const path = store.getState().transactionsPath
